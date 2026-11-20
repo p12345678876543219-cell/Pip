@@ -1,5 +1,5 @@
 
-name: Build YouTubePiP
+name: Build YouTubePiP Dylib
 
 on:
   workflow_dispatch:
@@ -15,13 +15,18 @@ jobs:
         run: |
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
 
-      - name: Build
+      - name: Build Dylib
         run: |
           export THEOS=$HOME/theos
-          make package
+          make clean
+          make
 
-      - name: Upload
+      - name: Find Dylib
+        run: |
+          find . -name "*.dylib"
+
+      - name: Upload Dylib
         uses: actions/upload-artifact@v4
         with:
-          name: YouTubePiP
-          path: packages/*
+          name: YouTubePiP-Dylib
+          path: .theos/obj/*.dylib
